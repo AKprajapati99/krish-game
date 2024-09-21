@@ -73,9 +73,29 @@ Array.prototype.last = function () {
   const perfectElement = document.getElementById("perfect");
   const restartButton = document.getElementById("restart");
   const scoreElement = document.getElementById("score");
+  const gestureButton = document.getElementById("gestureButton");
   
   // Initialize layout
   resetGame();
+
+  // Handle touch start (equivalent to mousedown)
+gestureButton.addEventListener("touchstart", function(event) {
+    event.preventDefault(); // Prevent default scrolling
+    if (phase == "waiting") {
+        lastTimestamp = undefined;
+        introductionElement.style.opacity = 0;
+        phase = "stretching";
+        window.requestAnimationFrame(animate);
+    }
+});
+
+// Handle touch end (equivalent to mouseup)
+gestureButton.addEventListener("touchend", function(event) {
+    event.preventDefault();
+    if (phase == "stretching") {
+        phase = "turning";
+    }
+});
   
   // Resets game variables and layouts but does not start the game (game starts on keypress)
   function resetGame() {
